@@ -1,6 +1,4 @@
-# from ..game_object import game_object
-from ..main import delta_time
-from ..operations import *
+from operations import *
 
 class rigid_body:
     linear_velocity = (0, 0)
@@ -13,8 +11,15 @@ class rigid_body:
     gravity = 10.0
     name = "RigidBody"
 
-    def update_body(object, self):
+    def __init__(self, gravity):
+        if type(gravity) != bool: raise Exception("type must be bool")
         
+        self.do_gravity = gravity
+
+    def update_body(self, object):
+        
+        from main import delta_time
+
         # Add gravity to all forces
         if self.gravity == True:
             self.forces_next_frame.append((0, rigid_body.gravity * delta_time))
@@ -45,10 +50,10 @@ class rigid_body:
         # Apply rotational velocity
         object.Transform.rotation += self.rotational_velocity * delta_time
 
-    def apply_force(amount, self):
+    def apply_force(self, amount):
         self.forces_next_frame.append(amount)
 
-    def apply_torque(amount, self):
+    def apply_torque(self, amount):
         self.torques_next_frame.append(amount)
 
     
